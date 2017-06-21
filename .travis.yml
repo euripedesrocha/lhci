@@ -3,8 +3,8 @@ language: cpp
 services: docker
 before_install:
     - docker build -t lhci .
-    - docker run --rm -u $UID:$GROUPS  -v `pwd`:/lhci-dev -t lhci /bin/bash -c "meson build"
-    - docker run --rm -u $UID:$GROUPS  -v `pwd`:/lhci-dev -t lhci /bin/bash -c "meson crossbuild"
 script:
-    - ninja -C build && build/test/lhci-test
-    - ninja -C crossbuild
+    - docker run --rm -u $UID:$GROUPS  -v `pwd`:/lhci-dev -t lhci /bin/bash -c "meson build"
+    - docker run --rm -u $UID:$GROUPS  -v `pwd`:/lhci-dev -t lhci /bin/bash -c "meson --cross-file cross.config crossbuild"
+    - docker run --rm -u $UID:$GROUPS  -v `pwd`:/lhci-dev -t lhci /bin/bash -c "ninja -C build && build/lhci-test"
+    - docker run --rm -u $UID:$GROUPS  -v `pwd`:/lhci-dev -t lhci /bin/bash -c "ninja -C crossbuild"
