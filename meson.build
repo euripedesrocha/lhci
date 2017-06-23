@@ -1,4 +1,4 @@
-project('lhci', 'cpp', 'c',
+project('lhci', 'c', 'cpp',
     version : '0.0.1',
     license : 'MIT')
 
@@ -10,7 +10,8 @@ add_global_arguments('-Werror',
     '-Wall',
     language : 'cpp')
 
-design_sources = ['src/main.c']
+design_sources = ['src/cucuzator.c']
+design_include = ['src']
 
 if meson.is_cross_build()
 
@@ -25,10 +26,13 @@ if meson.is_cross_build()
       install : false)
 else
 
-  test_sources = ['test/test_main.cpp']
+  test_sources = ['test/test_main.cpp'
+          ,'test/test_blink_color.cpp']
+  test_sources += design_sources
   test_includes = ['test/tools/fff'
       ,'test/tools/catch/']
   include_files = test_includes
+  include_files += design_include
   includes = include_directories(include_files)
   sources = test_sources
   tester = executable('lhci-test',
